@@ -26,6 +26,52 @@ Unowned dataset + dataset administrator = **can edit**
 
 Company dataset + admin or editor within company + dataset administrator = **can edit**
 
+### With ckanext-scheming
+
+To use with [ckanext-scheming](https://github.com/ckan/ckanext-scheming/), add the following field to your dataset schema:
+
+```
+{
+  "field_name": "managing_users",
+  "label": "Dataset administrators",
+  "preset": "dataset_admin"
+}
+```
+
+Create a presets.json file if it doesn't already exist, or add to it:
+
+```
+{
+  "dvrpc_presets_version": 1,
+  "about": "a preset for the customeruserprivileges plugin",
+  "about_url": "",
+  "presets": [
+    {
+      "preset_name": "dataset_admin",
+      "values": {
+        "validators": "ignore_missing",
+        "classes": ["control-full"],
+        "form_attrs": {
+          "data-module": "autocomplete",
+          "data-module-tags": "",
+          "data-module-source": "/api/2/util/user/autocomplete?ignore_self=true&q=?"
+        }
+      }
+    }
+  ]
+}
+```
+
+Finally, include the preset in your configuration file:
+
+```
+scheming.presets = ckanext.dvrpc_theme:presets.json ckanext.scheming:presets.json
+```
+
+where `ckanext.dvrpc_theme` is your theme and `presets.json` is the name of the presets file.
+
+See [DVRPC's custom theme](https://github.com/dvrpc/ckanext-dvrpc_theme) for a full example.
+
 ## Running tests
 
 ```sh
